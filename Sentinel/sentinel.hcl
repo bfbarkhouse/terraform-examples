@@ -4,6 +4,6 @@ policy "azure-appservice-prefix" {
 }
 
 policy "azure-appserviceplan-prefix" {
-  source            = "./azure-appserviceplan.sentinel"
+  source            = "./azure-appserviceplan-prefix.sentinel"
   enforcement_level = "hard-mandatory"
 }
