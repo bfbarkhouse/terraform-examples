@@ -8,7 +8,7 @@ allAppServicePlans = plan.find_resources("azurerm_app_service")
 # Filter to AWS IAM access keys with violations
 # The called function prints warnings for all violations
 violatingAppServicePlans = plan.filter_attribute_does_not_have_prefix(
-                         allAppServicePlans, "name", "bbarkhouse-hashi", true)
+                         allAppServicePlans, "name", "test", true)
 
 # Count violations
 violations = length(violatingAppServicePlans["messages"])
