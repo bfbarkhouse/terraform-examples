@@ -1,3 +1,11 @@
+module "tfplan-functions" {
+  source = "./common-functions/tfplan-functions.sentinel"
+}
+
+module "tfstate-functions" {
+  source = "./common-functions/tfstate-functions.sentinel"
+}
+
 policy "azure-appservice-prefix" {
   source            = "./azure-appservice-prefix.sentinel"
   enforcement_level = "hard-mandatory"
