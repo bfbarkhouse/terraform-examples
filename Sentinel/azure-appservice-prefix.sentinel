@@ -1,0 +1,19 @@
+# Import common-functions/tfplan-functions/tfplan-functions.sentinel
+# with alias "plan"
+import "tfplan-functions" as plan
+
+# Get all AWS IAM access keys
+allAppServicePlans = plan.find_resources("azurerm_app_service")
+
+# Filter to AWS IAM access keys with violations
+# The called function prints warnings for all violations
+violatingAppServicePlans = plan.filter_attribute_does_not_have_prefix(
+                         allAppServicePlans "name", "bbarkhouse-hashi", true)
+
+# Count violations
+violations = length(violatingAppServicePlans["messages"])
+
+# Main rule
+main = rule {
+  violations is 0
+}
