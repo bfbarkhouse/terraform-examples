@@ -32,7 +32,7 @@ module "aks" {
   #client_secret                    = "your-service-principal-client-password"
   kubernetes_version               = "1.19.3"
   orchestrator_version             = "1.19.3"
-  prefix                           = "${var.prefix}"
+  prefix                           = var.prefix
   cluster_name                     = "aks-dev-01"
   network_plugin                   = "azure"
   vnet_subnet_id                   = module.network.vnet_subnets[0]
