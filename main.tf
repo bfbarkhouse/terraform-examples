@@ -21,9 +21,9 @@ module "network" {
   depends_on          = [azurerm_resource_group.rg]
 }
 
-data "azuread_group" "aks_cluster_admins" {
-  name = "${var.prefix}aks-cluster-admins"
-}
+# data "azuread_group" "aks_cluster_admins" {
+#   name = "${var.prefix}aks-cluster-admins"
+# }
 
 module "aks" {
   source                           = "Azure/aks/azurerm"
@@ -32,15 +32,15 @@ module "aks" {
   #client_secret                    = "your-service-principal-client-password"
   kubernetes_version               = "1.19.3"
   orchestrator_version             = "1.19.3"
-  prefix                           = "prefix"
-  cluster_name                     = "cluster-name"
+  prefix                           = "${var.prefix}"
+  cluster_name                     = "aks-dev-01"
   network_plugin                   = "azure"
   vnet_subnet_id                   = module.network.vnet_subnets[0]
   os_disk_size_gb                  = 50
   sku_tier                         = "Paid" # defaults to Free
-  enable_role_based_access_control = true
-  rbac_aad_admin_group_object_ids  = [data.azuread_group.aks_cluster_admins.id]
-  rbac_aad_managed                 = true
+  #enable_role_based_access_control = true
+  #rbac_aad_admin_group_object_ids  = [data.azuread_group.aks_cluster_admins.id]
+  #rbac_aad_managed                 = true
   private_cluster_enabled          = true # default value
   enable_http_application_routing  = true
   enable_azure_policy              = true
