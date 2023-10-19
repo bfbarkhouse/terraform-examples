@@ -9,3 +9,9 @@ variable "resource_group_location" {
 variable "prefix" {
     type    = string
 }
+variable "admin_username" {
+    type = string
+}
+variable "admin_password" {
+    type = string
+}
