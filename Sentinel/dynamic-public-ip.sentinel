@@ -1,7 +1,6 @@
 import tfplan-functions as plan
 allPublicIPs = plan.find_resources("azurerm_public_ip")
-allowedPublicIPAllocMethod = "Dynamic"
-violatingPublicIPs = plan.filter_attribute_is_not_value(allPublicIPs, "allocation_method", allowedPublicIPAllocMethod, true)
+violatingPublicIPs = plan.filter_attribute_is_not_value(allPublicIPs, "allocation_method", "Dynamic", true)
 
 main = rule {
    length(violatingPublicIPs["messages"]) is 0
