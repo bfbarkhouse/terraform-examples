@@ -20,3 +20,7 @@ policy "dynamic-public-ip" {
   source            = "./dynamic-public-ip.sentinel"
   enforcement_level = "hard-mandatory"
 }
+policy "restrict-vm-sizes" {
+  source            = "./restrict-vm-sizes.sentinel"
+  enforcement_level = "advisory"
+}

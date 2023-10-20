@@ -1,0 +1,7 @@
+import "tfplan-functions" as plan
+allowed_sizes = ["Standard_F2", "Standard_D2_v2"]
+allAzureVMs = plan.find_resources("azurerm_linux_virtual_machine", "azurerm_windows_virtual_machine")
+violatingAzureVMs = plan.filter_attribute_not_in_list(allAzureVMs, "size", allowed_sizes, true)
+main = rule {
+    length(violatingAzureVMs["messages"]) is 0
+}
