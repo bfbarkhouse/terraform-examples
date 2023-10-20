@@ -60,7 +60,8 @@ module "virtual-machine" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  size      = "Standard_F2"
+  #size      = "Standard_F2"
+  size = "Standard_D2_v2"
   subnet_id = module.vnet.vnet_subnets[0]
   new_network_interface = {
     ip_forwarding_enabled = false
