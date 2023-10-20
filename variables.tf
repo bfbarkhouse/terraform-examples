@@ -1,17 +1,20 @@
 variable "resource_group_name" {
-  type        = string
+  type = string
 }
 
 variable "resource_group_location" {
-  type        = string
+  type = string
 }
 
 variable "prefix" {
-    type    = string
+  type = string
 }
 variable "admin_username" {
-    type = string
+  type = string
 }
 variable "admin_password" {
-    type = string
+  type = string
+}
+variable "vnet_name" {
+  type = string
 }
