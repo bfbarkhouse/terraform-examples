@@ -12,29 +12,86 @@ module "vnet" {
   source  = "Azure/vnet/azurerm"
   version = "4.1.0"
   # insert the 3 required variables here
-  vnet_location = azurerm_resource_group.rg.location
+  vnet_location       = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  use_for_each = true
+  use_for_each        = true
+  vnet_name           = "${var.prefix}-${var.vnet_name}"
+  subnet_names        = ["subnet1"]
+  subnet_prefixes     = ["10.0.1.0/24"]
 
+}
+
+resource "azurerm_public_ip" "public_ip" {
+  name                = "vm_public_ip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Dynamic"
+}
+
+# resource "azurerm_network_interface" "nic" {
+#   name                = "${var.prefix}-linux-vm-nic"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = module.vnet.vnet_subnets[0]
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.public_ip.id
+#   }
+# }
+resource "azurerm_network_security_group" "nsg" {
+  name                = "ssh_nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "allow_ssh_sg"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+resource "azurerm_network_interface_security_group_association" "association" {
+  #network_interface_id      = azurerm_network_interface.nic.id
+  network_interface_id = module.virtual-machine.network_interface_id
+  network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
 module "virtual-machine" {
   source  = "Azure/virtual-machine/azurerm"
   version = "1.0.0"
   # insert the 7 required variables here
-  image_os = "linux"
-  os_simple = "UbuntuServer"
-  location = azurerm_resource_group.rg.location
+  image_os            = "linux"
+  os_simple           = "UbuntuServer"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  name = "${var.prefix}-linux-vm"
+  name                = "${var.prefix}-linux-vm"
   os_disk = {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  size = "Standard_F2"
+  size      = "Standard_F2"
   subnet_id = module.vnet.vnet_subnets[0]
-  admin_username = var.admin_username
-  admin_password = var.admin_password
+    new_network_interface = {
+    ip_forwarding_enabled = false
+    name                = "${var.prefix}-linux-vm-nic"
+    ip_configurations = [
+      {
+        public_ip_address_id = azurerm_public_ip.public_ip.id
+        subnet_id                     = module.vnet.vnet_subnets[0]
+    private_ip_address_allocation = "Dynamic"
+        primary              = true
+      }
+    ]
+  }
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
   disable_password_authentication = "false"
 }
 
