@@ -25,6 +25,12 @@ resource "azurerm_public_ip" "public_ip" {
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Dynamic"
 }
+resource "azurerm_public_ip" "public_ip2" {
+  name                = "vm_public_ip2"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Static"
+}
 
 resource "azurerm_network_security_group" "nsg" {
   name                = "ssh_nsg"
