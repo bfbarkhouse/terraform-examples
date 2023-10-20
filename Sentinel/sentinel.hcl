@@ -15,3 +15,8 @@ policy "azure-appserviceplan-prefix" {
   source            = "./azure-appserviceplan-prefix.sentinel"
   enforcement_level = "hard-mandatory"
 }
+
+policy "dynamic-public-ip" {
+  source            = "./dynamic-public-ip.sentinel"
+  enforcement_level = "hard-mandatory"
+}
