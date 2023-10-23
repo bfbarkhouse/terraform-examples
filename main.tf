@@ -26,13 +26,6 @@ resource "azurerm_public_ip" "public_ip" {
   allocation_method   = "Dynamic"
 }
 
-# resource "azurerm_public_ip" "public_ip2" {
-#   name                = "${var.prefix}-vm-public-ip2"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = azurerm_resource_group.rg.location
-#   allocation_method   = "Static"
-# }
-
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.prefix}-linux-vm-nsg"
   location            = azurerm_resource_group.rg.location
@@ -79,7 +72,7 @@ module "virtual-machine" {
     storage_account_type = "Standard_LRS"
   }
   size      = "Standard_F2"
-  #size = "Standard_D2_v2"
+  #size = "Standard_D48_v5"
   subnet_id = module.vnet.vnet_subnets[0]
   new_network_interface = {
     ip_forwarding_enabled = false
