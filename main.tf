@@ -86,7 +86,7 @@ module "virtual-machine" {
     name                  = "${var.prefix}-linux-vm-nic"
     ip_configurations = [
       {
-        public_ip_address_id          = azurerm_public_ip.public_ip[count.index].id
+        public_ip_address_id          = azurerm_public_ip.public_ip.id
         subnet_id                     = module.vnet.vnet_subnets[0]
         private_ip_address_allocation = "Dynamic"
         primary                       = true
