@@ -8,3 +8,13 @@ check "health_check" {
     error_message = "${data.http.terraform_io.url} returned an unhealthy status code"
   }
 }
+
+check "check_vm_state" {
+  assert {
+    condition = data.module.azurerm_virtual_machine.power_state == "running"
+    error_message = format("Virtual Machine (%s) should be in a 'running' status, instead state is '%s'",
+      data.module.azurerm_virtual_machine.id,
+      data.module.azurerm_virtual_machine.power_state
+    )
+  }
+}
