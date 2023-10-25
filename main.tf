@@ -44,7 +44,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
   #   security_rule {
   #   name                       = "allow_http_sg"
-  #   priority                   = 100
+  #   priority                   = 101
   #   direction                  = "Inbound"
   #   access                     = "Allow"
   #   protocol                   = "Tcp"
