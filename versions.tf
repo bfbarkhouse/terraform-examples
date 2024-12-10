@@ -14,3 +14,6 @@ terraform {
     }
   }
 }
+provider "azurerm" {
+  # Configuration options
+}
